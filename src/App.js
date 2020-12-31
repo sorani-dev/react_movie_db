@@ -12,6 +12,7 @@ const App = () => {
   const [movies, setMovies] = useState([]);
   const [searchValue, setSearchValue] = useState('')
   const [favorites, setFavorites] = useState([])
+  const localStorageKey = 'react-movie-app-favourites'
 
   const getMovieRequest = async (searchValue) => {
     const url = `${API_KEY}&s=${searchValue}`
@@ -26,22 +27,37 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    getMovieRequest(searchValue)
+  }, [searchValue])
+
+  useEffect(() => {
+    const stored = localStorage.getItem(localStorageKey)
+    if (stored !== null) {
+      const movieFavorites = JSON.parse(stored)
+      setFavorites(movieFavorites)
+    }
+  }, [])
+
+  const saveToLocalStorage = item => {
+    localStorage.setItem(localStorageKey, JSON.stringify(item))
+  }
+
+
   const addFavoriteMovie = (movie) => {
     const id = favorites.find(favorite => favorite.imdbID === movie.imdbID)
     if (id === undefined) {
       const newFavorites = [ ...favorites, movie ]
       setFavorites(newFavorites)
+      saveToLocalStorage(newFavorites)
     }
   }
 
   const removeFavoriteMovie = (movie) => {
     const newFavorites = favorites.filter(favorite => favorite.imdbID !== movie.imdbID)
     setFavorites(newFavorites)
+    saveToLocalStorage(newFavorites)
   }
-
-  useEffect(() => {
-    getMovieRequest(searchValue)
-  }, [searchValue])
 
   return (
     <div className='container-fluid movie-app'>
