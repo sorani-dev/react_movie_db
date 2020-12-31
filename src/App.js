@@ -10,8 +10,8 @@ const App = () => {
   const [movies, setMovies] = useState([]);
   const [searchValue, setSearchValue] = useState('')
 
-  const getMovieRequest = async () => {
-    const url = `${API_KEY}&s=star wars`
+  const getMovieRequest = async (searchValue) => {
+    const url = `${API_KEY}&s=${searchValue}`
 
     const response = await fetch(url)
 
@@ -24,8 +24,8 @@ const App = () => {
   }
 
   useEffect(() => {
-    getMovieRequest()
-  })
+    getMovieRequest(searchValue)
+  }, [searchValue])
 
   return (
     <div className='container-fluid movie-app'>
