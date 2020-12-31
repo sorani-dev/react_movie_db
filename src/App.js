@@ -27,8 +27,11 @@ const App = () => {
   }
 
   const addFavoriteMovie = (movie) => {
-    const newFavorites = [ ...favorites, movie ]
-    setFavorites(newFavorites)
+    const id = favorites.find(favorite => favorite.imdbID === movie.imdbID)
+    if (id === undefined) {
+      const newFavorites = [ ...favorites, movie ]
+      setFavorites(newFavorites)
+    }
   }
 
   const removeFavoriteMovie = (movie) => {
