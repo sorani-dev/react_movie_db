@@ -8,14 +8,14 @@ const App = () => {
   const [movies, setMovies] = useState([]);
 
   const getMovieRequest = async () => {
-    const url = API_KEY
+    const url = `${API_KEY}&s=star wars`
 
     const response = await fetch(url)
 
     if (response.ok) {
       const responseJson = await response.json()
       if (responseJson.Search) {
-        setMovies(responseJson.Search)
+        setMovies(responseJson.Search);
       }
     }
   }
