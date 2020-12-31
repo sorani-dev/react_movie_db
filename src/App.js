@@ -6,6 +6,7 @@ import { API_KEY } from './.env'
 import MovieListHeading from './components/MovieListHeading';
 import SearchBox from './components/SearchBox';
 import AddToFavorites from './components/AddToFavorites';
+import RemoveFavourites from './components/RemoveFavorites';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
@@ -27,6 +28,11 @@ const App = () => {
 
   const addFavoriteMovie = (movie) => {
     const newFavorites = [ ...favorites, movie ]
+    setFavorites(newFavorites)
+  }
+
+  const removeFavoriteMovie = (movie) => {
+    const newFavorites = favorites.filter(favorite => favorite.imdbID !== movie.imdbID)
     setFavorites(newFavorites)
   }
 
@@ -52,12 +58,12 @@ const App = () => {
         <MovieListHeading heading='Favorites' />
       </div>
       <div className='row'>
-        <MovieList
-          movies={favorites}
-          Favorites={AddToFavorites}
-        />
-      </div>
-
+				<MovieList
+					movies={favorites}
+					handleFavoritesClick={removeFavoriteMovie}
+					Favorites={RemoveFavourites}
+				/>
+			</div>
     </div>
   );
 };
