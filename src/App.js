@@ -5,10 +5,12 @@ import MovieList from './components/MovieList';
 import { API_KEY } from './.env'
 import MovieListHeading from './components/MovieListHeading';
 import SearchBox from './components/SearchBox';
+import AddToFavorites from './components/AddToFavorites';
 
 const App = () => {
   const [movies, setMovies] = useState([]);
   const [searchValue, setSearchValue] = useState('')
+  const [favorites, setFavorites] = useState([])
 
   const getMovieRequest = async (searchValue) => {
     const url = `${API_KEY}&s=${searchValue}`
@@ -23,6 +25,11 @@ const App = () => {
     }
   }
 
+  const addFavoriteMovie = (movie) => {
+    const newFavorites = [ ...favorites, movie ]
+    setFavorites(newFavorites)
+  }
+
   useEffect(() => {
     getMovieRequest(searchValue)
   }, [searchValue])
@@ -34,8 +41,23 @@ const App = () => {
         <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
       </div>
       <div className='row'>
-        <MovieList movies={movies} />
+        <MovieList
+          movies={movies}
+          Favorites={AddToFavorites}
+          handleFavoritesClick={addFavoriteMovie}
+        />
       </div>
+
+      <div className="row d-flex align-items-center mt-4 mb-4">
+        <MovieListHeading heading='Favorites' />
+      </div>
+      <div className='row'>
+        <MovieList
+          movies={favorites}
+          Favorites={AddToFavorites}
+        />
+      </div>
+
     </div>
   );
 };
